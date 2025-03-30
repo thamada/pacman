@@ -1,4 +1,4 @@
-//Time-stamp: <2024-06-17 11:52:30 hamada>
+//Time-stamp: <2025-03-30 Sun 20:16:31 JST hamada>
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
@@ -38,11 +38,11 @@ static const u1_t PROGMEM DEVEUI[8] = { 0xDE, 0x57, 0x06, 0xD0, 0x7E, 0xD5, 0xB3
 static const u1_t PROGMEM APPKEY[16] = { 0x07, 0x4B, 0x5D, 0x09, 0x6F, 0xBD, 0x98, 0xE2, 0xC8, 0x76, 0xA4, 0xAA, 0xB2, 0x03, 0xBC, 0x68 };// App Key: msbで記述
 **/
 
-/** beacon-006
+/** beacon-006 
 static const u1_t PROGMEM APPEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // App EUI: lsbで記述 0000000000000000でも構わない
 static const u1_t PROGMEM DEVEUI[8] = { 0xEE, 0x61, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 }; // Device EUI: lsbで記述
 static const u1_t PROGMEM APPKEY[16] = { 0x41, 0x6A, 0x5B, 0x1A, 0x0A, 0x0E, 0xDB, 0x96, 0x16, 0xA7, 0x30, 0xAF, 0xC5, 0x94, 0x25, 0x07 };// App Key: msbで
- **/
+**/
 
 /** beacon-001 
 static const u1_t PROGMEM APPEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // App EUI: lsbで記述 0000000000000000でも構わない
@@ -74,12 +74,16 @@ static const u1_t PROGMEM DEVEUI[8] = { 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77
 static const u1_t PROGMEM APPKEY[16] = { 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77 };// App Key: msbで
 **/
 
-/** pacman **/
+/** pacman
 static const u1_t PROGMEM APPEUI[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // App EUI: lsbで記述 0000000000000000でも構わない
 static const u1_t PROGMEM DEVEUI[8] = { 0x82, 0x86, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 }; // Device EUI: lsbで記述
 static const u1_t PROGMEM APPKEY[16] = { 0xC3, 0x25, 0x11, 0xEE, 0xC3, 0x78, 0x5E, 0x95, 0x1A, 0x20, 0xE1, 0x7F, 0xAD, 0xAD, 0x48, 0x8C };// App Key: msbで
+ **/
 
-
+/** n20250330 **/
+static const u1_t PROGMEM APPEUI[8] = { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }; // App EUI: lsbで記述 0000000000000000でも構わない
+static const u1_t PROGMEM DEVEUI[8] = { 0x61, 0xF8, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 }; // Device EUI: lsbで記述
+static const u1_t PROGMEM APPKEY[16] = { 0x4B, 0x3B, 0xA3, 0x4B, 0xD0, 0x19, 0xEC, 0x3D, 0x24, 0x3C, 0x83, 0x2B, 0xBF, 0x3D, 0x05, 0x59 };// App Key: msbで
 
 void os_getArtEui (u1_t* buf) {
   memcpy_P(buf, APPEUI, 8);
@@ -137,6 +141,8 @@ void get_data() {
 }
 
 void do_send(osjob_t* j) {
+
+  ledBrink(6, 500);
 
   delay(1000);
 
@@ -247,8 +253,8 @@ void setup() {
   Serial.begin(9600);
   while (!Serial);
   //  Serial.println(F("beacon-004"));
-  Serial.println(F("Dummy"));
-  Serial.println(F("fw: 20240617 11:52"));
+  //  Serial.println(F("Dummy"));
+  Serial.println(F("fw: 20250330 20:17"));
   Serial.print(F("SLEEP_S = "));
   Serial.println(SLEEP_S);
   Serial.println(F("only Beacon!"));
@@ -327,13 +333,20 @@ unsigned int adc() {                 // ADCの値を読む
 
 // LED点滅関数関数（点滅回数、点滅周期[ms]）
 void ledBrink(char blink_num, unsigned int blink_int) {
+     // NONE !!
+}
+
+// LED点滅関数関数（点滅回数、点滅周期[ms]）
+/**
+void ledBrink(char blink_num, unsigned int blink_int) {
   for (char i = 0; i < (blink_num * 2); i++) {
     delay(blink_int / 2);
   }
 }
+*/
 
-/**
 // LED点滅関数関数（点滅回数、点滅周期[ms]）
+/**
 void ledBrink(char blink_num, unsigned int blink_int) {
   for (char i = 0; i < (blink_num * 2); i++) {
     if (digitalRead(LED) != HIGH)digitalWrite(LED, HIGH);
